@@ -1,4 +1,5 @@
-﻿using DapperDemo.Models;
+﻿using DapperDemo.Data;
+using DapperDemo.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,29 +9,44 @@ namespace DapperDemo.Repository
 {
     public class CompanyRepositoryEF : ICompanyRepository
     {
+
+        private readonly ApplicationDbContext _db;
+
+        public CompanyRepositoryEF(ApplicationDbContext db)
+        {
+            _db = db;
+        }
+
         public Company Add(Company company)
         {
-            throw new NotImplementedException();
+            _db.Companies.Add(company);
+            _db.SaveChanges();
+            return company;
         }
 
         public Company Find(int id)
         {
-            throw new NotImplementedException();
+            return _db.Companies.FirstOrDefault(u => u.CompantId == id);
         }
 
         public List<Company> GetAll()
         {
-            throw new NotImplementedException();
+            return _db.Companies.ToList();
         }
 
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            Company company = _db.Companies.FirstOrDefault(u => u.CompantId == id);
+            _db.Companies.Remove(company);
+            _db.SaveChanges();
+            return;
         }
 
         public Company Update(Company company)
         {
-            throw new NotImplementedException();
+            _db.Companies.Update(company);
+            _db.SaveChanges();
+            return company;
         }
     }
 }
